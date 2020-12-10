@@ -1,0 +1,22 @@
+{
+  "name": "error-typed-promise",
+  "version": "0.0.0",
+  "description": "TypeScript Promises that are error-typed",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "npm run test:types",
+    "test:types": "dtslint --localTs node_modules/typescript/lib tests"
+  },
+  "keywords": [
+    "typescript",
+    "promise",
+    "either",
+    "error"
+  ],
+  "author": "Gonzalo Gluzman <dggluz@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "dtslint": "^4.0.6",
+    "typescript": "^4.1.2"
+  }
+}
