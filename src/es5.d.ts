@@ -1,7 +1,7 @@
 /**
  * Represents the completion of an asynchronous operation
  */
-export interface _Promise<T> {
+export interface _Promise<T, E> {
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18,7 +18,10 @@ export interface _Promise<T> {
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A Promise for the completion of the callback.
      */
-    catch<TResult = never>(
-        onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null
-    ): _Promise<T | TResult>;
+    catch(
+        onrejected?: undefined | null
+    ): _Promise<T, E>;
+    catch<TResult = never, E1 = never>(
+        onrejected: ((reason: E) => TResult | PromiseLike<TResult> | _Promise<TResult, E1>)
+    ): _Promise<T | TResult, E1>;
 }
