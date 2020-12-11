@@ -169,12 +169,18 @@ export interface _PromiseConstructor {
     // // see: lib.es2015.iterable.d.ts
     // // race<T>(values: Iterable<T>): Promise<T extends PromiseLike<infer U> ? U : T>;
 
-    // /**
-    //  * Creates a new rejected promise for the provided reason.
-    //  * @param reason The reason the promise was rejected.
-    //  * @returns A new rejected Promise.
-    //  */
-    // reject<T = never>(reason?: any): Promise<T>;
+    /**
+     * Creates a new rejected promise for the provided reason.
+     * @param reason The reason the promise was rejected.
+     * @returns A new rejected Promise.
+     */
+    reject<T = never>(reason: T): _Promise<never, T>;
+    /**
+     * Creates a new rejected promise for the provided reason.
+     * @param reason The reason the promise was rejected.
+     * @returns A new rejected Promise.
+     */
+    reject(): _Promise<never, undefined>;
 
     /**
      * Creates a new resolved promise for the provided value.
