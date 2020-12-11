@@ -11,10 +11,37 @@ export interface _Promise<T, E> {
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A Promise for the completion of which ever callback is executed.
      */
-    then<TResult1 = T, TResult2 = never>(
-        onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null,
-        onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null
-    ): _Promise<TResult1 | TResult2>;
+    then(onfulfilled?: undefined | null, onrejected?: undefined | null): _Promise<T, E>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A _Promise for the completion of which ever callback is executed.
+     */
+    then<R>(
+        onfulfilled: (value: T) => R,
+        onrejected?: undefined | null
+    ): _Promise<UnpackResolved<R>, E | UnpackRejected<R> | unknownError>;
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A _Promise for the completion of which ever callback is executed.
+     */
+    then<R>(
+        onfulfilled: undefined | null,
+        onrejected: (reason: E) => R 
+    ): _Promise<T | UnpackResolved<R>, UnpackRejected<R> | unknownError>;
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A _Promise for the completion of which ever callback is executed.
+     */
+    then<R1, R2>(
+        onfulfilled: (value: T) => R1,
+        onrejected: (reason: E) => R2
+    ): _Promise<UnpackResolved<R1> | UnpackResolved<R2>, UnpackRejected<R1> | UnpackRejected<R2> | unknownError>;
 
     /**
      * Attaches a callback for only the rejection of the Promise.
@@ -30,6 +57,6 @@ export interface _Promise<T, E> {
      * @returns A _Promise for the completion of the callback.
      */
     catch<R>(
-        onrejected: ((reason: E) => R)
+        onrejected: (reason: E) => R
     ): _Promise<T | UnpackResolved<R>, UnpackRejected<R> | unknownError>;
 }

@@ -1,39 +1,66 @@
 import { _Promise } from '../src/es5';
 
-const _pString: _Promise<string> = null as any;
-_pString; // $ExpectType _Promise<string>
-const _pNumber: _Promise<number> = null as any;
-_pNumber; // $ExpectType _Promise<number>
-const _pBoolean: _Promise<boolean> = null as any;
-_pBoolean; // $ExpectType _Promise<boolean>
-const _pRejectedNumber: _Promise<never> = null as any;
-_pRejectedNumber; // $ExpectType _Promise<never>
-const _pRejectedBoolean: _Promise<never> = null as any;
-_pRejectedBoolean; // $ExpectType _Promise<never>
+const _pStringBoolean: _Promise<string, boolean> = null as any;
+_pStringBoolean; // $ExpectType _Promise<string, boolean>
+const _pNumber: _Promise<number, never> = null as any;
+_pNumber; // $ExpectType _Promise<number, never>
+const _pBoolean: _Promise<boolean, never> = null as any;
+_pBoolean; // $ExpectType _Promise<boolean, never>
+const _pNumberString: _Promise<number, string> = null as any;
+_pNumberString; // $ExpectType _Promise<number, string>
+const _pBooleanString: _Promise<boolean, string> = null as any;
+_pBooleanString; // $ExpectType _Promise<boolean, string>
+const _pBooleanNumber: _Promise<boolean, number> = null as any;
+_pBooleanNumber; // $ExpectType _Promise<boolean, number>
+const _pRejectedNumber: _Promise<never, number> = null as any;
+_pRejectedNumber; // $ExpectType _Promise<never, number>
+const _pRejectedBoolean: _Promise<never, boolean> = null as any;
+_pRejectedBoolean; // $ExpectType _Promise<never, boolean>
 
 // Without parameter
-_pString.then(); // $ExpectType _Promise<string>
+_pStringBoolean.then(); // $ExpectType _Promise<string, boolean>
 
 // With undefined
-_pString.then(undefined); // $ExpectType _Promise<string>
+_pStringBoolean.then(undefined); // $ExpectType _Promise<string, boolean>
 
 // With null
-_pString.then(null); // $ExpectType _Promise<string>
+_pStringBoolean.then(null); // $ExpectType _Promise<string, boolean>
 
 // with a callback returning a plain value
-_pString.then(_ => 3); // $ExpectType _Promise<number>
+_pStringBoolean.then(value => { // $ExpectType _Promise<number, boolean | unknownError>
+    value; // $ExpectType string
+    return 3;
+});
 
 // with a callback returning a resolved PromiseLike
-_pString.then(_ => Promise.resolve(3)); // $ExpectType _Promise<number>
+_pStringBoolean.then(value => { // $ExpectType _Promise<number, boolean | unknownError>
+    value; // $ExpectType string
+    return Promise.resolve(3);
+});
 
 // with a callback returning a rejected PromiseLike
-_pString.then(_ => Promise.reject(3)); // $ExpectType _Promise<never>
+_pStringBoolean.then(value => { // $ExpectType _Promise<never, boolean | unknownError>
+    value; // $ExpectType string
+    return Promise.reject(3);
+});
 
 // with a callback returning a resolved _Promise
-_pString.then(_ => _pNumber); // $ExpectType _Promise<number>
+_pStringBoolean.then(value => { // $ExpectType _Promise<number, boolean | unknownError>
+    value; // $ExpectType string
+    return _pNumber;
+});
+
+// with a callback returning a resolved/rejected _Promise
+_pStringBoolean.then(value => { // $ExpectType _Promise<number, string | boolean | unknownError>
+    value; // $ExpectType string
+    return _pNumberString;
+});
 
 // with a callback returning a rejected _Promise
-_pString.then(_ => _pRejectedNumber); // $ExpectType _Promise<never>
+_pStringBoolean.then(value => { // $ExpectType _Promise<never, number | boolean | unknownError>
+    value; // $ExpectType string
+    return _pRejectedNumber;
+});
 
 /**
  * Passing a second argument
@@ -43,88 +70,446 @@ _pString.then(_ => _pRejectedNumber); // $ExpectType _Promise<never>
  * First argument undefined
  */
 // With undefined
-_pString.then(undefined, undefined); // $ExpectType _Promise<string>
+_pStringBoolean.then(undefined, undefined); // $ExpectType _Promise<string, boolean>
 // With null
-_pString.then(undefined, null); // $ExpectType _Promise<string>
+_pStringBoolean.then(undefined, null); // $ExpectType _Promise<string, boolean>
 // with a callback returning a plain value
-_pString.then(undefined, _ => 3); // $ExpectType _Promise<string | number>
+_pStringBoolean.then(undefined, error => { // $ExpectType _Promise<string | number, unknownError>
+    error; // $ExpectType boolean
+    return 3;
+});
 // with a callback returning a resolved PromiseLike
-_pString.then(undefined, _ => Promise.resolve(3)); // $ExpectType _Promise<string | number>
+_pStringBoolean.then(undefined, error => { // $ExpectType _Promise<string | number, unknownError>
+    error; // $ExpectError boolean
+    return Promise.resolve(3);
+});
 // with a callback returning a rejected PromiseLike
-_pString.then(undefined, _ => Promise.reject(3)); // $ExpectType _Promise<string>
+_pStringBoolean.then(undefined, error => { // $ExpectType _Promise<string, unknownError>
+    error; // $ExpectType boolean
+    return Promise.reject(3);
+});
 // with a callback returning a resolved _Promise
-_pString.then(undefined, _ => _pNumber); // $ExpectType _Promise<string | number>
+_pStringBoolean.then(undefined, error => { // $ExpectType _Promise<string | number, unknownError>
+    error; // $ExpectType boolean
+    return _pNumber;
+});
+// with a callback returning a resolved/rejected _Promise
+_pStringBoolean.then(undefined, error => { // $ExpectType<string | number, string | unknownError>
+    error; // $ExpectType boolean
+    return _pNumberString;
+});
 // with a callback returning a rejected _Promise
-_pString.then(undefined, _ => _pRejectedNumber); // $ExpectType _Promise<string>
+_pStringBoolean.then(undefined, error => { // $ExpectType _Promise<string, number | unknownError>
+    error; // $ExpectType boolean
+    return _pRejectedNumber;
+});
 
 /**
  * First argument null
  */
 // With undefined
-_pString.then(null, undefined); // $ExpectType _Promise<string>
+_pStringBoolean.then(null, undefined); // $ExpectType _Promise<string, boolean>
 // With null
-_pString.then(null, null); // $ExpectType _Promise<string>
+_pStringBoolean.then(null, null); // $ExpectType _Promise<string, boolean>
 // with a callback returning a plain value
-_pString.then(null, _ => 3); // $ExpectType _Promise<string | number>
+_pStringBoolean.then(null, error => { // $ExpectType _Promise<string | number, unknownError>
+    error; // $ExpectType boolean
+    return 3;
+});
 // with a callback returning a resolved PromiseLike
-_pString.then(null, _ => Promise.resolve(3)); // $ExpectType _Promise<string | number>
+_pStringBoolean.then(null, error => { // $ExpectType _Promise<string | number, unknownError>
+    error; // $ExpectError boolean
+    return Promise.resolve(3);
+});
 // with a callback returning a rejected PromiseLike
-_pString.then(null, _ => Promise.reject(3)); // $ExpectType _Promise<string>
+_pStringBoolean.then(null, error => { // $ExpectType _Promise<string, unknownError>
+    error; // $ExpectType boolean
+    return Promise.reject(3);
+});
 // with a callback returning a resolved _Promise
-_pString.then(null, _ => _pNumber); // $ExpectType _Promise<string | number>
-// with a callback returning a rejected PromiseLike
-_pString.then(null, _ => _pRejectedNumber); // $ExpectType _Promise<string>
+_pStringBoolean.then(null, error => { // $ExpectType _Promise<string | number, unknownError>
+    error; // $ExpectType boolean
+    return _pNumber;
+});
+// with a callback returning a resolved/rejected _Promise
+_pStringBoolean.then(null, error => { // $ExpectType<string | number, string | unknownError>
+    error; // $ExpectType boolean
+    return _pNumberString;
+});
+// with a callback returning a rejected _Promise
+_pStringBoolean.then(null, error => { // $ExpectType _Promise<string, number | unknownError>
+    error; // $ExpectType boolean
+    return _pRejectedNumber;
+});
 
 /**
  * First argument is a callback returning plain value
  */
 // With undefined
-_pString.then(_ => 3, undefined); // $ExpectType _Promise<number>
+_pStringBoolean.then(value => { // $ExpectType _Promise<number, boolean | unknownError>
+    value; // $ExpectType string
+    return 3;
+}, undefined);
 // With null
-_pString.then(_ => 3, null); // $ExpectType _Promise<number>
+_pStringBoolean.then(value => { // $ExpectType _Promise<number, boolean | unknownError>
+    value; // $ExpectType string
+    return 3;
+}, null);
 // with a callback returning a plain value
-_pString.then(_ => 3, _ => true); // $ExpectType _Promise<number | boolean>
+_pStringBoolean.then(value => { // $ExpectType _Promise<number | boolean, unknownError>
+    value; // $ExpectType string
+    return 3;
+}, error => {
+    error; // $ExpectType boolean
+    return true;
+});
 // with a callback returning a resolved PromiseLike
-_pString.then(_ => 3, _ => Promise.resolve(true)); // $ExpectType _Promise<number | boolean>
+_pStringBoolean.then(value => { // $ExpectType _Promise<number | boolean, unknownError>
+    value; // $ExpectType string
+    return 3;
+}, error => {
+    error; // $ExpectType boolean
+    return Promise.resolve(true);
+});
 // with a callback returning a rejected PromiseLike
-_pString.then(_ => 3, _ => Promise.reject(true)); // $ExpectType _Promise<number>
+_pStringBoolean.then(value => { // $ExpectType _Promise<number, unknownError>
+    value; // $ExpectType string
+    return 3;
+}, error => {
+    error; // $ExpectType boolean
+    return Promise.reject(true);
+});
 // with a callback returning a resolved _Promise
-_pString.then(_ => 3, _ => _pBoolean); // $ExpectType _Promise<number | boolean>
+_pStringBoolean.then(value => { // $ExpectType _Promise<number | boolean, unknownError>
+    value; // $ExpectType string
+    return 3;
+}, error => {
+    error; // $ExpectType boolean
+    return _pBoolean;
+});
+// with a callback returning a resolved/rejected _Promise
+_pStringBoolean.then(value => { // $ExpectType _Promise<number | boolean, string | unknownError>
+    value; // $ExpectType string
+    return 3;
+}, error => {
+    error; // $ExpectType boolean
+    return _pBooleanString;
+});
 // with a callback returning a rejected _Promise
-_pString.then(_ => 3, _ => _pRejectedBoolean); // $ExpectType _Promise<number>
+_pStringBoolean.then(value => { // $ExpectType _Promise<number, number | unknownError>
+    value; // $ExpectType string
+    return 3;
+}, error => {
+    error; // $ExpectType boolean
+    return _pRejectedNumber;
+});
 
 /**
  * First argument is a callback returning resolved PromiseLike
  */
 // With undefined
-_pString.then(_ => Promise.resolve(3), undefined); // $ExpectType _Promise<number>
+_pStringBoolean.then(value => { // $ExpectType _Promise<number, boolean | unknownError>
+    value; // $ExpectType string
+    return Promise.resolve(3);
+}, undefined);
 // With null
-_pString.then(_ => Promise.resolve(3), null); // $ExpectType _Promise<number>
+_pStringBoolean.then(value => { // $ExpectType _Promise<number, boolean | unknownError>
+    value; // $ExpectType string
+    return Promise.resolve(3);
+}, null);
 // with a callback returning a plain value
-_pString.then(_ => Promise.resolve(3), _ => true); // $ExpectType _Promise<number | boolean>
+_pStringBoolean.then(value => { // $ExpectType _Promise<number | boolean, unknownError>
+    value; // $ExpectType string
+    return Promise.resolve(3);
+}, error => {
+    error; // $ExpectType boolean
+    return true;
+});
 // with a callback returning a resolved PromiseLike
-_pString.then(_ => Promise.resolve(3), _ => Promise.resolve(true)); // $ExpectType _Promise<number | boolean>
+_pStringBoolean.then(value => { // $ExpectType _Promise<number | boolean, unknownError>
+    value; // $ExpectType string
+    return Promise.resolve(3);
+}, error => {
+    error; // $ExpectType boolean
+    return Promise.resolve(true);
+});
 // with a callback returning a rejected PromiseLike
-_pString.then(_ => Promise.resolve(3), _ => Promise.reject(true)); // $ExpectType _Promise<number>
+_pStringBoolean.then(value => { // $ExpectType _Promise<number, unknownError>
+    value; // $ExpectType string
+    return Promise.resolve(3);
+}, error => {
+    error; // $ExpectType boolean
+    return Promise.reject(true);
+});
 // with a callback returning a resolved _Promise
-_pString.then(_ => Promise.resolve(3), _ => _pBoolean); // $ExpectType _Promise<number | boolean>
+_pStringBoolean.then(value => { // $ExpectType _Promise<number | boolean, unknownError>
+    value; // $ExpectType string
+    return Promise.resolve(3);
+}, error => {
+    error; // $ExpectType boolean
+    return _pBoolean;
+});
+// with a callback returning a resolved/rejected _Promise
+_pStringBoolean.then(value => { // $ExpectType _Promise<number | boolean, string | unknownError>
+    value; // $ExpectType string
+    return Promise.resolve(3);
+}, error => {
+    error; // $ExpectType boolean
+    return _pBooleanString;
+});
 // with a callback returning a rejected _Promise
-_pString.then(_ => Promise.resolve(3), _ => _pRejectedBoolean); // $ExpectType _Promise<number>
+_pStringBoolean.then(value => { // $ExpectType _Promise<number, number | unknownError>
+    value; // $ExpectType string
+    return Promise.resolve(3);
+}, error => {
+    error; // $ExpectType boolean
+    return _pRejectedNumber;
+});
 
 /**
  * First argument is a callback returning rejected PromiseLike
  */
 // With undefined
-_pString.then(_ => Promise.reject(3), undefined); // $ExpectType _Promise<never>
+_pStringBoolean.then(value => { // $ExpectType _Promise<never, boolean | unknownError>
+    value; // $ExpectType string
+    return Promise.reject(3);
+}, undefined);
 // With null
-_pString.then(_ => Promise.reject(3), null); // $ExpectType _Promise<never>
+_pStringBoolean.then(value => { // $ExpectType _Promise<never, boolean | unknownError>
+    value; // $ExpectType string
+    return Promise.reject(3);
+}, null);
 // with a callback returning a plain value
-_pString.then(_ => Promise.reject(3), _ => true); // $ExpectType _Promise<boolean>
+_pStringBoolean.then(value => { // $ExpectType _Promise<boolean, unknownError>
+    value; // $ExpectType string
+    return Promise.reject(3);
+}, error => {
+    error; // $ExpectType boolean
+    return true;
+});
 // with a callback returning a resolved PromiseLike
-_pString.then(_ => Promise.reject(3), _ => Promise.resolve(true)); // $ExpectType _Promise<boolean>
+_pStringBoolean.then(value => { // $ExpectType _Promise<boolean, unknownError>
+    value; // $ExpectType string
+    return Promise.reject(3);
+}, error => {
+    error; // $ExpectType boolean
+    return Promise.resolve(true);
+});
 // with a callback returning a rejected PromiseLike
-_pString.then(_ => Promise.reject(3), _ => Promise.reject(true)); // $ExpectType _Promise<never>
+_pStringBoolean.then(value => { // $ExpectType _Promise<never, unknownError>
+    value; // $ExpectType string
+    return Promise.reject(3);
+}, error => {
+    error; // $ExpectType boolean
+    return Promise.reject(true);
+});
 // with a callback returning a resolved _Promise
-_pString.then(_ => Promise.reject(3), _ => _pBoolean); // $ExpectType _Promise<boolean>
+_pStringBoolean.then(value => { // $ExpectType _Promise<boolean, unknownError>
+    value; // $ExpectType string
+    return Promise.reject(3);
+}, error => {
+    error; // $ExpectType boolean
+    return _pBoolean;
+});
+// with a callback returning a resolved/rejected _Promise
+_pStringBoolean.then(value => { // $ExpectType _Promise<boolean, string | unknownError>
+    value; // $ExpectType string
+    return Promise.reject(3);
+}, error => {
+    error; // $ExpectType boolean
+    return _pBooleanString;
+});
 // with a callback returning a rejected _Promise
-_pString.then(_ => Promise.reject(3), _ => _pRejectedBoolean); // $ExpectType _Promise<never>
+_pStringBoolean.then(value => { // $ExpectType _Promise<never, boolean | unknownError>
+    value; // $ExpectType string
+    return Promise.reject(3);
+}, error => {
+    error; // $ExpectType boolean
+    return _pRejectedBoolean;
+});
+
+/**
+ * First argument is a callback returning resolved _Promise
+ */
+// With undefined
+_pStringBoolean.then(value => { // $ExpectType _Promise<number, boolean | unknownError>
+    value; // $ExpectType string
+    return _pNumber;
+}, undefined);
+// With null
+_pStringBoolean.then(value => { // $ExpectType _Promise<number, boolean | unknownError>
+    value; // $ExpectType string
+    return _pNumber;
+}, null);
+// with a callback returning a plain value
+_pStringBoolean.then(value => { // $ExpectType _Promise<number | boolean, unknownError>
+    value; // $ExpectType string
+    return _pNumber;
+}, error => {
+    error; // $ExpectType boolean
+    return true;
+});
+// with a callback returning a resolved PromiseLike
+_pStringBoolean.then(value => { // $ExpectType _Promise<number | boolean, unknownError>
+    value; // $ExpectType string
+    return _pNumber;
+}, error => {
+    error; // $ExpectType boolean
+    return Promise.resolve(true);
+});
+// with a callback returning a rejected PromiseLike
+_pStringBoolean.then(value => { // $ExpectType _Promise<number, unknownError>
+    value; // $ExpectType string
+    return _pNumber;
+}, error => {
+    error; // $ExpectType boolean
+    return Promise.reject(true);
+});
+// with a callback returning a resolved _Promise
+_pStringBoolean.then(value => { // $ExpectType _Promise<number | boolean, unknownError>
+    value; // $ExpectType string
+    return _pNumber;
+}, error => {
+    error; // $ExpectType boolean
+    return _pBoolean;
+});
+// with a callback returning a resolved/rejected _Promise
+_pStringBoolean.then(value => { // $ExpectType _Promise<number | boolean, string | unknownError>
+    value; // $ExpectType string
+    return _pNumber;
+}, error => {
+    error; // $ExpectType boolean
+    return _pBooleanString;
+});
+// with a callback returning a rejected _Promise
+_pStringBoolean.then(value => { // $ExpectType _Promise<number, boolean | unknownError>
+    value; // $ExpectType string
+    return _pNumber;
+}, error => {
+    error; // $ExpectType boolean
+    return _pRejectedBoolean;
+});
+
+/**
+ * First argument is a callback returning rejected _Promise
+ */
+// With undefined
+_pStringBoolean.then(value => { // $ExpectType _Promise<never, number | boolean | unknownError>
+    value; // $ExpectType string
+    return _pRejectedNumber;
+}, undefined);
+// With null
+_pStringBoolean.then(value => { // $ExpectType _Promise<never, number | boolean | unknownError>
+    value; // $ExpectType string
+    return _pRejectedNumber;
+}, null);
+// with a callback returning a plain value
+_pStringBoolean.then(value => { // $ExpectType _Promise<boolean, number | unknownError>
+    value; // $ExpectType string
+    return _pRejectedNumber;
+}, error => {
+    error; // $ExpectType boolean
+    return true;
+});
+// with a callback returning a resolved PromiseLike
+_pStringBoolean.then(value => { // $ExpectType _Promise<boolean, number | unknownError>
+    value; // $ExpectType string
+    return _pRejectedNumber;
+}, error => {
+    error; // $ExpectType boolean
+    return Promise.resolve(true);
+});
+// with a callback returning a rejected PromiseLike
+_pStringBoolean.then(value => { // $ExpectType _Promise<never, number | unknownError>
+    value; // $ExpectType string
+    return _pRejectedNumber;
+}, error => {
+    error; // $ExpectType boolean
+    return Promise.reject(true);
+});
+// with a callback returning a resolved _Promise
+_pStringBoolean.then(value => { // $ExpectType _Promise<boolean, number | unknownError>
+    value; // $ExpectType string
+    return _pRejectedNumber;
+}, error => {
+    error; // $ExpectType boolean
+    return _pBoolean;
+});
+// with a callback returning a resolved/rejected _Promise
+_pStringBoolean.then(value => { // $ExpectType _Promise<boolean, string | number | unknownError>
+    value; // $ExpectType string
+    return _pRejectedNumber;
+}, error => {
+    error; // $ExpectType boolean
+    return _pBooleanString;
+});
+// with a callback returning a rejected _Promise
+_pStringBoolean.then(value => { // $ExpectType _Promise<never, number | boolean | unknownError>
+    value; // $ExpectType string
+    return _pRejectedNumber;
+}, error => {
+    error; // $ExpectType boolean
+    return _pRejectedBoolean;
+});
+
+/**
+ * First argument is a callback returning resolved/rejected _Promise
+ */
+// With undefined
+_pStringBoolean.then(value => { // $ExpectType _Promise<number, string | boolean | unknownError>
+    value; // $ExpectType string
+    return _pNumberString;
+}, undefined);
+// // With null
+_pStringBoolean.then(value => { // $ExpectType _Promise<number, string | boolean | unknownError>
+    value; // $ExpectType string
+    return _pNumberString;
+}, null);
+// with a callback returning a plain value
+_pStringBoolean.then(value => { // $ExpectType _Promise<number | boolean, string | unknownError>
+    value; // $ExpectType string
+    return _pNumberString;
+}, error => {
+    error; // $ExpectType boolean
+    return true;
+});
+// with a callback returning a resolved PromiseLike
+_pStringBoolean.then(value => { // $ExpectType _Promise<number | boolean, string | unknownError>
+    value; // $ExpectType string
+    return _pNumberString;
+}, error => {
+    error; // $ExpectType boolean
+    return Promise.resolve(true);
+});
+// with a callback returning a rejected PromiseLike
+_pStringBoolean.then(value => { // $ExpectType _Promise<number, string | unknownError>
+    value; // $ExpectType string
+    return _pNumberString;
+}, error => {
+    error; // $ExpectType boolean
+    return Promise.reject(true);
+});
+// with a callback returning a resolved _Promise
+_pStringBoolean.then(value => { // $ExpectType _Promise<number | boolean, string | unknownError>
+    value; // $ExpectType string
+    return _pNumberString;
+}, error => {
+    error; // $ExpectType boolean
+    return _pBoolean;
+});
+// with a callback returning a resolved/rejected _Promise
+_pStringBoolean.then(value => { // $ExpectType _Promise<number | boolean, string | number | unknownError>
+    value; // $ExpectType string
+    return _pNumberString;
+}, error => {
+    error; // $ExpectType boolean
+    return _pBooleanNumber;
+});
+// with a callback returning a rejected _Promise
+_pStringBoolean.then(value => { // $ExpectType _Promise<number, string | boolean | unknownError>
+    value; // $ExpectType string
+    return _pNumberString;
+}, error => {
+    error; // $ExpectType boolean
+    return _pRejectedBoolean;
+});
