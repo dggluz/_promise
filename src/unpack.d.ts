@@ -2,7 +2,7 @@ import { _Promise } from './_promise';
 
 export type UnpackResolved <P> =
     P extends _Promise<infer T, any> ? T :
-    P extends Promise<infer T> ? T :
+    P extends PromiseLike<infer T> ? T :
     P
 ;
 
