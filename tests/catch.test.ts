@@ -1,4 +1,4 @@
-import { _Promise } from '../src/es5';
+import { _Promise } from '../src/_promise';
 
 const _pStringBoolean: _Promise<string, boolean> = null as any;
 _pStringBoolean; // $ExpectType _Promise<string, boolean>

@@ -1,4 +1,4 @@
-import { _Promise } from './es5';
+import { _Promise } from './_promise';
 
 export type UnpackResolved <P> =
     P extends _Promise<infer T, any> ? T :

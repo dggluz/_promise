@@ -1,3 +1,3 @@
-export * from './es5';
+export * from './_promise';
 
 export const _Promise: any = Promise;
