@@ -64,6 +64,15 @@ export interface _Promise<T, E> {
     catch<R>(
         onrejected: (reason: E) => R
     ): _Promise<T | UnpackResolved<R>, UnpackRejected<R> | unknownError>;
+
+    // TODO
+    // /**
+    //  * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+    //  * resolved value cannot be modified from the callback.
+    //  * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+    //  * @returns A Promise for the completion of the callback.
+    //  */
+    // finally(onfinally?: (() => void) | undefined | null): Promise<T>
 }
 
 export interface _PromiseConstructor {
@@ -81,6 +90,7 @@ export interface _PromiseConstructor {
     new (executor: () => void): _Promise<unknown, never>;
     new <T, E = never>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: E) => void) => void): _Promise<T, E | unknownError>;
     
+    // TODO
     // /**
     //  * Creates a Promise that is resolved with an array of results when all of the provided Promises
     //  * resolve, or rejected when any Promise is rejected.
@@ -164,6 +174,7 @@ export interface _PromiseConstructor {
     // // see: lib.es2015.iterable.d.ts
     // // all<T>(values: Iterable<T | PromiseLike<T>>): Promise<T[]>;
 
+    // TODO
     // /**
     //  * Creates a Promise that is resolved or rejected when any of the provided Promises are resolved
     //  * or rejected.
@@ -174,6 +185,32 @@ export interface _PromiseConstructor {
 
     // // see: lib.es2015.iterable.d.ts
     // // race<T>(values: Iterable<T>): Promise<T extends PromiseLike<infer U> ? U : T>;
+
+    // TODO
+    // /**
+    //  * Creates a Promise that is resolved with an array of results when all
+    //  * of the provided Promises resolve or reject.
+    //  * @param values An array of Promises.
+    //  * @returns A new Promise.
+    //  */
+    // allSettled<T extends readonly unknown[] | readonly [unknown]>(values: T):
+    //     Promise<{ -readonly [P in keyof T]: PromiseSettledResult<T[P] extends PromiseLike<infer U> ? U : T[P]> }>;
+
+    // /**
+    //  * Creates a Promise that is resolved with an array of results when all
+    //  * of the provided Promises resolve or reject.
+    //  * @param values An array of Promises.
+    //  * @returns A new Promise.
+    //  */
+    // allSettled<T>(values: Iterable<T>): Promise<PromiseSettledResult<T extends PromiseLike<infer U> ? U : T>[]>;
+
+    // TODO
+    // /**
+    //  * The any function returns a promise that is fulfilled by the first given promise to be fulfilled, or rejected with an AggregateError containing an array of rejection reasons if all of the given promises are rejected. It resolves all elements of the passed iterable to promises as it runs this algorithm.
+    //  * @param values An array or iterable of Promises.
+    //  * @returns A new Promise.
+    //  */
+    // any<T>(values: (T | PromiseLike<T>)[] | Iterable<T | PromiseLike<T>>): Promise<T>
 
     /**
      * Creates a new rejected promise for the provided reason.
