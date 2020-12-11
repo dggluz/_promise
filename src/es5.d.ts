@@ -1,3 +1,5 @@
+import { UnpackResolved, UnpackRejected } from './unpack';
+
 /**
  * Represents the completion of an asynchronous operation
  */
@@ -25,17 +27,3 @@ export interface _Promise<T, E> {
         onrejected: ((reason: E) => R)
     ): _Promise<T | UnpackResolved<R>, UnpackRejected<R>>;
 }
-
-type UnpackResolved <P> =
-    P extends _Promise<infer T, any> ? T :
-    P extends Promise<infer T> ? T :
-    P
-;
-
-type UnpackRejected <P> =
-    P extends Promise<any> ? never :
-    P extends _Promise<any, infer E> ? E :
-    never
-;
-
-type Foo = UnpackRejected<Promise<number>>;
