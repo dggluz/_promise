@@ -1,4 +1,4 @@
-import { _Promise } from './_promise';
+import { _Promise } from './index';
 
 export type UnpackResolved <P> =
     P extends PromiseLike<infer T> ? T :
