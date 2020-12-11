@@ -21,7 +21,21 @@ export interface _Promise<T, E> {
     catch(
         onrejected?: undefined | null
     ): _Promise<T, E>;
-    catch<TResult = never, E1 = never>(
-        onrejected: ((reason: E) => TResult | PromiseLike<TResult> | _Promise<TResult, E1>)
-    ): _Promise<T | TResult, E1>;
+    catch<R>(
+        onrejected: ((reason: E) => R)
+    ): _Promise<T | UnpackResolved<R>, UnpackRejected<R>>;
 }
+
+type UnpackResolved <P> =
+    P extends _Promise<infer T, any> ? T :
+    P extends Promise<infer T> ? T :
+    P
+;
+
+type UnpackRejected <P> =
+    P extends Promise<any> ? never :
+    P extends _Promise<any, infer E> ? E :
+    never
+;
+
+type Foo = UnpackRejected<Promise<number>>;

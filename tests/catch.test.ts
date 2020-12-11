@@ -22,7 +22,10 @@ _pStringBoolean.catch(null); // $ExpectType _Promise<string, boolean>
 _pStringBoolean.catch(_ => 3); // $ExpectType _Promise<string | number, never>
 
 // with a callback returning a resolved PromiseLike
-_pStringBoolean.catch(_ => Promise.resolve(3));
+_pStringBoolean.catch(_ => Promise.resolve(3)); // $ExpectType _Promise<string | number, never>
+
+// with a callback returning a rejected PromiseLike
+_pStringBoolean.catch(_ => Promise.reject(3)); // $ExpectType _Promise<string, never>
 
 // with a callback returning an only resolved _Promise
 _pStringBoolean.catch(_ => _pNumber); // $ExpectType _Promise<string | number, never>
