@@ -176,16 +176,21 @@ export interface _PromiseConstructor {
     //  */
     // reject<T = never>(reason?: any): Promise<T>;
 
-    // /**
-    //  * Creates a new resolved promise for the provided value.
-    //  * @param value A promise.
-    //  * @returns A promise whose internal state matches the provided promise.
-    //  */
-    // resolve<T>(value: T | PromiseLike<T>): Promise<T>;
+    /**
+     * Creates a new resolved promise for the provided value.
+     * @param value A promise.
+     * @returns A promise whose internal state matches the provided promise.
+     */
+    resolve<P>(value: P): _Promise<
+        UnpackResolved<P>,
+        P extends Promise<any> ? unknownError :
+        P extends _Promise<any, infer E> ? E :
+        never
+    >;
 
-    // /**
-    //  * Creates a new resolved promise .
-    //  * @returns A resolved promise.
-    //  */
-    // resolve(): Promise<void>;
+    /**
+     * Creates a new resolved promise .
+     * @returns A resolved promise.
+     */
+    resolve(): _Promise<void, never>;
 }
