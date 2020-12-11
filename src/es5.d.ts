@@ -1,3 +1,4 @@
+import { unknownError } from './unknown-error';
 import { UnpackResolved, UnpackRejected } from './unpack';
 
 /**
@@ -25,5 +26,5 @@ export interface _Promise<T, E> {
     ): _Promise<T, E>;
     catch<R>(
         onrejected: ((reason: E) => R)
-    ): _Promise<T | UnpackResolved<R>, UnpackRejected<R>>;
+    ): _Promise<T | UnpackResolved<R>, UnpackRejected<R> | unknownError>;
 }
