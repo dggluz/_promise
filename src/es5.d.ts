@@ -24,6 +24,11 @@ export interface _Promise<T, E> {
     catch(
         onrejected?: undefined | null
     ): _Promise<T, E>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A _Promise for the completion of the callback.
+     */
     catch<R>(
         onrejected: ((reason: E) => R)
     ): _Promise<T | UnpackResolved<R>, UnpackRejected<R> | unknownError>;
