@@ -1,10 +1,15 @@
 import { unknownError } from './unknown-error';
 import { UnpackResolved, UnpackRejected } from './unpack';
 
+declare const __brand: unique symbol;
+
 /**
  * Represents the completion of an asynchronous operation
  */
 export interface _Promise<T, E> {
+    // Brand is needed for _Promise not extending Promise
+    [__brand]: any;
+
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -67,14 +72,15 @@ export interface _PromiseConstructor {
      */
     readonly prototype: Promise<any>;
 
-    // /**
-    //  * Creates a new Promise.
-    //  * @param executor A callback used to initialize the promise. This callback is passed two arguments:
-    //  * a resolve callback used to resolve the promise with a value or the result of another promise,
-    //  * and a reject callback used to reject the promise with a provided reason or error.
-    //  */
-    // new <T>(executor: (resolve: (value?: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
-
+    /**
+     * Creates a new _Promise.
+     * @param executor A callback used to initialize the promise. This callback is passed two arguments:
+     * a resolve callback used to resolve the promise with a value or the result of another promise,
+     * and a reject callback used to reject the promise with a provided reason or error.
+     */
+    new (executor: () => void): _Promise<unknown, never>;
+    new <T, E = never>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: E) => void) => void): _Promise<T, E | unknownError>;
+    
     // /**
     //  * Creates a Promise that is resolved with an array of results when all of the provided Promises
     //  * resolve, or rejected when any Promise is rejected.
@@ -189,9 +195,7 @@ export interface _PromiseConstructor {
      */
     resolve<P>(value: P): _Promise<
         UnpackResolved<P>,
-        P extends Promise<any> ? unknownError :
-        P extends _Promise<any, infer E> ? E :
-        never
+        UnpackRejected<P>
     >;
 
     /**

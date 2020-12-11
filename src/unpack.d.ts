@@ -1,4 +1,5 @@
 import { _Promise } from './index';
+import { unknownError } from './unknown-error';
 
 export type UnpackResolved <P> =
     P extends PromiseLike<infer T> ? T :
@@ -6,7 +7,7 @@ export type UnpackResolved <P> =
 ;
 
 export type UnpackRejected <P> =
-    P extends Promise<any> ? never :
     P extends _Promise<any, infer E> ? E :
+    P extends Promise<any> ? unknownError :
     never
 ;
