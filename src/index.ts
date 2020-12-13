@@ -1,6 +1,7 @@
 import { unknownError } from './unknown-error';
 import { UnpackResolved, UnpackRejected } from './unpack';
 import { _AggregateError } from './aggregate-error';
+import { _PromiseSettledResult } from './promise-settled-result';
 
 declare const __brand: unique symbol;
 
@@ -341,23 +342,22 @@ export interface _PromiseConstructor {
      */
     race<T>(values: Iterable<T>): _Promise<UnpackResolved<T>, UnpackRejected<T>>;
 
-    // TODO
-    // /**
-    //  * Creates a Promise that is resolved with an array of results when all
-    //  * of the provided Promises resolve or reject.
-    //  * @param values An array of Promises.
-    //  * @returns A new Promise.
-    //  */
-    // allSettled<T extends readonly unknown[] | readonly [unknown]>(values: T):
-    //     Promise<{ -readonly [P in keyof T]: PromiseSettledResult<T[P] extends PromiseLike<infer U> ? U : T[P]> }>;
+    /**
+     * Creates a Promise that is resolved with an array of results when all
+     * of the provided Promises resolve or reject.
+     * @param values An array of Promises.
+     * @returns A new Promise.
+     */
+    allSettled<T extends readonly unknown[] | readonly [unknown]>(values: T):
+        _Promise<{ -readonly [P in keyof T]: _PromiseSettledResult<UnpackResolved<T[P]>, UnpackRejected<T[P]>> }, never>;
 
-    // /**
-    //  * Creates a Promise that is resolved with an array of results when all
-    //  * of the provided Promises resolve or reject.
-    //  * @param values An array of Promises.
-    //  * @returns A new Promise.
-    //  */
-    // allSettled<T>(values: Iterable<T>): Promise<PromiseSettledResult<T extends PromiseLike<infer U> ? U : T>[]>;
+    /**
+     * Creates a Promise that is resolved with an array of results when all
+     * of the provided Promises resolve or reject.
+     * @param values An array of Promises.
+     * @returns A new Promise.
+     */
+    allSettled<T>(values: Iterable<T>): _Promise<_PromiseSettledResult<UnpackResolved<T>, UnpackRejected<T>>[], never>;
 
     /**
      * The any function returns a promise that is fulfilled by the first given promise to be fulfilled, or rejected with an AggregateError containing an array of rejection reasons if all of the given promises are rejected. It resolves all elements of the passed iterable to promises as it runs this algorithm.

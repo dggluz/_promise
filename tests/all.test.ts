@@ -65,7 +65,7 @@ _Promise.all([_pNumber, true, 'Boo!']); // $ExpectType _Promise<[number, boolean
 
 // Most generic case
 _Promise.all([_p1, _p2, _p3, _p4, _p5, _p6, _p7, _p8, _p9, _p10, _pNumber]); // $ExpectType _Promise<number[], "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J">
-_Promise.all([_p1, _p2, _p3, _p4, _p5, _p6, _p7, _p8, _p9, _p10, Promise.resolve(11)]); // $ExpectType _Promise<number[], "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | unknownError>
+_Promise.all([_p1, _p2, _p3, _p4, _p5, _p6, _p7, _p8, _p9, _p10, Promise.resolve(11)]); // $ExpectType _Promise<number[], unknownError | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J">
 _Promise.all([_p1, _p2, _p3, _p4, _p5, _p6, _p7, _p8, _p9, _p10, 11]); // $ExpectType _Promise<number[], "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J">
 
 // Iterable:

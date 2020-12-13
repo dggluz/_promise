@@ -4,6 +4,7 @@
         "no-useless-files": false,
         "trim-file": false,
         "no-relative-import-in-test": false,
-        "no-consecutive-blank-lines": false
+        "no-consecutive-blank-lines": false,
+        "max-line-length": false
     }
 }
