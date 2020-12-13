@@ -69,8 +69,8 @@ _Promise.all([_p1, _p2, _p3, _p4, _p5, _p6, _p7, _p8, _p9, _p10, Promise.resolve
 _Promise.all([_p1, _p2, _p3, _p4, _p5, _p6, _p7, _p8, _p9, _p10, 11]); // $ExpectType _Promise<number[], "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J">
 
 // Iterable:
-const iterator: Iterable<number> = null as any;
-_Promise.all(iterator); // $ExpectType _Promise<number[], never>
+const iterable: Iterable<number> = null as any;
+_Promise.all(iterable); // $ExpectType _Promise<number[], never>
 // Complex case:
 const iterator2: Iterable<number | _Promise<boolean, string> | Promise<string>> = null as any;
 _Promise.all(iterator2); // $ExpectType _Promise<(string | number | boolean)[], string | unknownError>
