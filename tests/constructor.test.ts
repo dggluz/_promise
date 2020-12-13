@@ -78,7 +78,7 @@ new _Promise<number, _Promise<never, number>>((resolve, reject) => { // $ExpectT
 });
 
 // with a reject calling a resolved/rejected _Promise
-new _Promise<number, _Promise<number, string>>((resolve, reject) => { // $ExpectType _Promise<number, _Promise<number, string> | unknownError>
+new _Promise<number, _Promise<number, string>>((resolve, reject) => { // $ExpectType _Promise<number, unknownError | _Promise<number, string>>
     resolve(3);
     reject(_pNumberString);
 });
