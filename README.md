@@ -141,7 +141,8 @@ Notice that the resolution type is preserved, but the rejection type is lost.
 
 ### Drawbacks
 
-Using `async/await` is possible but will always transform your `_Promise`s into regular `Promise`s (and hence, will lost the rejection types). Therefore, avoiding `async/await` is recommended when using this library.
+- Using `async/await` is possible but will always transform your `_Promise`s into regular `Promise`s (and hence, will lost the rejection types). Therefore, avoiding `async/await` is recommended when using this library.
+- This library adds all the methods of `Promise` and `PromiseConstructor` (to `_Promise` and `_PromiseConstructor`, respectively). It will even add the methods for which your version of JavaScript may have not support (depending on the version, obviously).
 
 ## Contributing
 
