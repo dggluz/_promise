@@ -2,9 +2,11 @@
   "name": "error-typed-promise",
   "version": "1.0.0",
   "description": "TypeScript Promises that are error-typed",
-  "main": "build/index.ts",
-  "typings": "build/typings/index.d.ts",
+  "main": "dist/index.ts",
+  "typings": "dist/typings/index.d.ts",
+  "files": ["dist"],
   "scripts": {
+    "build": "rm -rf dist && tsc",
     "test": "npm run test:types",
     "test:types": "dtslint --localTs node_modules/typescript/lib tests"
   },
