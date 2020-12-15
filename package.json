@@ -4,7 +4,9 @@
   "description": "TypeScript Promises that are error-typed",
   "main": "dist/index.ts",
   "typings": "dist/typings/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "rm -rf dist && tsc",
     "test": "npm run test:types",
