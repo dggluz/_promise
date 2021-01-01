@@ -25,10 +25,14 @@ export interface _Promise<T, E> {
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A _Promise for the completion of which ever callback is executed.
      */
-    then<R>(
+    then<R extends PromiseLike<any>>(
         onfulfilled: (value: T) => R,
         onrejected?: undefined | null
     ): _Promise<UnpackResolved<R>, E | UnpackRejected<R> | unknownError>;
+    then<R>(
+        onfulfilled: (value: T) => R,
+        onrejected?: undefined | null
+    ): _Promise<R, E | UnpackRejected<R> | unknownError>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -385,9 +389,13 @@ export interface _PromiseConstructor {
      * @param value A promise.
      * @returns A promise whose internal state matches the provided promise.
      */
-    resolve<P>(value: P): _Promise<
+    resolve<P extends PromiseLike<any>>(value: P): _Promise<
         UnpackResolved<P>,
         UnpackRejected<P>
+    >;
+    resolve<T>(value: T): _Promise<
+        T,
+        UnpackRejected<T>
     >;
 
     /**

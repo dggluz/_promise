@@ -1,4 +1,6 @@
 import { _Promise } from '_Promise';
+import { unknownError } from '../src/unknown-error';
+import { UnpackRejected } from '../src/unpack';
 
 const _pStringBoolean: _Promise<string, boolean> = null as any;
 _pStringBoolean; // $ExpectType _Promise<string, boolean>
@@ -513,3 +515,21 @@ _pStringBoolean.then(value => { // $ExpectType _Promise<number, string | boolean
     error; // $ExpectType boolean
     return _pRejectedBoolean;
 });
+
+
+/**
+ * More complex case for type inference
+ */
+const applyIf = <T, E = never> (condition: boolean, fn: (x: T) => _Promise<T, E>) =>
+    (x: T) => {
+        const ret = _Promise
+            .resolve(x)
+            .then(x => x)
+            .then(x => {
+                x; // $ExpectType T
+                return fn(x);
+            });
+        ret; // $ExpectType _Promise<T, unknownError | UnpackRejected<T> | E>
+        return ret;
+    }
+;
