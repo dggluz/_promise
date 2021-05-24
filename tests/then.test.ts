@@ -2,6 +2,7 @@ import { _Promise } from '_Promise';
 import { unknownError } from '../src/unknown-error';
 import { UnpackRejected } from '../src/unpack';
 
+
 const _pStringBoolean: _Promise<string, boolean> = null as any;
 _pStringBoolean; // $ExpectType _Promise<string, boolean>
 const _pNumber: _Promise<number, never> = null as any;
@@ -62,6 +63,14 @@ _pStringBoolean.then(value => { // $ExpectType _Promise<number, string | boolean
 _pStringBoolean.then(value => { // $ExpectType _Promise<never, number | boolean | unknownError>
     value; // $ExpectType string
     return _pRejectedNumber;
+});
+
+// With a callback returning a union of rejected _Promise and a value
+_pStringBoolean.then(value => { // $ExpectType _Promise<3, number | boolean | unknownError>
+    value; // $ExpectType string
+    return value.length > 7 ?
+        _pRejectedNumber :
+        3;
 });
 
 /**
@@ -517,6 +526,18 @@ _pStringBoolean.then(value => { // $ExpectType _Promise<number, string | boolean
 });
 
 
+// With a callback returning a union of rejected _Promise and a value
+const foo = _pStringBoolean.then(value => { // $ExpectType _Promise<3, number | boolean | unknownError>
+    value; // $ExpectType string
+    return value.length > 7 ?
+        _pRejectedNumber :
+        3;
+}, error => {
+    error; // $ExpectType boolean
+    return _pRejectedBoolean;
+});
+
+
 /**
  * More complex case for type inference
  */
@@ -525,11 +546,14 @@ const applyIf = <T, E = never> (condition: boolean, fn: (x: T) => _Promise<T, E>
         const ret = _Promise
             .resolve(x)
             .then(x => x)
+            .then(x => x)
+            .then(x => x, e => _Promise.reject(e))
+            .then(x => x)
             .then(x => {
                 x; // $ExpectType T
                 return fn(x);
             });
-        ret; // $ExpectType _Promise<T, unknownError | UnpackRejected<T> | E>
+        ret; // $ExpectType _Promise<T, unknownError | E>
         return ret;
     }
 ;

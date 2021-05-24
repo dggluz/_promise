@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2021-05-24
+### Fixed
+
+- Instance's `.then` and `.catch` typings were rewritten with a fix.
+- A couple of test cases were added
+- `unknownError` is being exported.
+- DocBlocks were improved.
+
+
 ## [1.0.0] - 2020-12-15
 ### Added
 

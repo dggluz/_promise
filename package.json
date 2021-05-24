@@ -1,6 +1,6 @@
 {
   "name": "error-typed-promise",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "TypeScript Promises that are error-typed",
   "main": "dist/index.ts",
   "typings": "dist/typings/index.d.ts",
