@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.2] - 2021-07-02
+### Fixed
+
+- Fixed `package.json` error.
+
 ## [1.0.1] - 2021-05-24
 ### Fixed
 
