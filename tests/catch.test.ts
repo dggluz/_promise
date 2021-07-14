@@ -53,3 +53,45 @@ _pStringBoolean.catch(e => { // $ExpectType _Promise<string, number | unknownErr
     e; // $ExpectType boolean
     return _pRejectedNumber;
 });
+
+/**
+ * Tap
+ */
+
+const tap: <T> (fn: (x: T) => any) => (value: T) => T = null as any;
+
+// $ExpectType _Promise<string | number, unknownError>
+const tap1 = _pNumberString
+    .catch(tap(parseInt))
+;
+
+// $ExpectType _Promise<string | number, unknownError>
+const tap2 = _pNumberString
+    .catch(
+        // $ExpectType (value: string) => string
+        tap(
+            x => x.length // $ExpectType (x: string) => number
+        )
+    )
+;
+
+/**
+ * TapCatch
+ */
+
+const tapCatch: <E> (fn: (err: E) => any) => (err: E) => _Promise<never, E> = null as any;
+
+// $ExpectType _Promise<number, string | unknownError>
+const tapCatch1 = _pNumberString
+    .catch(tapCatch(parseInt))
+;
+
+// $ExpectType _Promise<number, string | unknownError>
+const tapCatch2 = _pNumberString
+    .catch(
+        // $ExpectType (err: string) => _Promise<never, string>
+        tapCatch(
+            x => x.length // $ExpectType (x: string) => number
+        )
+    )
+;

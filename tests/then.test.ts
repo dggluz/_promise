@@ -557,3 +557,24 @@ const applyIf = <T, E = never> (condition: boolean, fn: (x: T) => _Promise<T, E>
         return ret;
     }
 ;
+
+/**
+ * Tap
+ */
+
+const tap: <T> (fn: (x: T) => any) => (value: T) => T = null as any;
+
+// $ExpectType _Promise<string, boolean | unknownError>
+const tap1 = _pStringBoolean
+    .then(tap(parseInt))
+;
+
+// $ExpectType _Promise<string, boolean | unknownError>
+const tap2 = _pStringBoolean
+    .then(
+        // $ExpectType (value: string) => string
+        tap(
+            x => x.length // $ExpectType (x: string) => number
+        )
+    )
+;

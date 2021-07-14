@@ -13,13 +13,6 @@ export interface _Promise<T, E> {
     // Brand is needed for _Promise not extending Promise
     [__brand]: any;
 
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A _Promise for the completion of which ever callback is executed.
-     */
-    then(onfulfilled?: undefined | null, onrejected?: undefined | null): _Promise<T, E>
 
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -27,10 +20,10 @@ export interface _Promise<T, E> {
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A _Promise for the completion of which ever callback is executed.
      */
-    then<TResult, EResult = never>(
-        onfulfilled?: (value: T) => _Promise<TResult, EResult> | PromiseLike<TResult> | TResult,
-        onrejected?: undefined | null
-    ): _Promise<TResult, E | EResult | unknownError>;
+     then<TResult1, TResult2 = never, EResult1 = never, EResult2 = never>(
+        onfulfilled: (value: T) => _Promise<TResult1, EResult1> | PromiseLike<TResult1> | TResult1,
+        onrejected: (reason: E) => _Promise<TResult2, EResult2> | PromiseLike<TResult2> | TResult2
+    ): _Promise<TResult1 | TResult2, EResult1 | EResult2 | unknownError>;
 
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -49,10 +42,27 @@ export interface _Promise<T, E> {
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A _Promise for the completion of which ever callback is executed.
      */
-    then<TResult1, TResult2 = never, EResult1 = never, EResult2 = never>(
-        onfulfilled: (value: T) => _Promise<TResult1, EResult1> | PromiseLike<TResult1> | TResult1,
-        onrejected: (reason: E) => _Promise<TResult2, EResult2> | PromiseLike<TResult2> | TResult2
-    ): _Promise<TResult1 | TResult2, EResult1 | EResult2 | unknownError>;
+    then<TResult, EResult = never>(
+        onfulfilled: (value: T) => _Promise<TResult, EResult> | PromiseLike<TResult> | TResult,
+        onrejected?: undefined | null
+    ): _Promise<TResult, E | EResult | unknownError>;
+
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A _Promise for the completion of which ever callback is executed.
+     */
+    then(onfulfilled?: undefined | null, onrejected?: undefined | null): _Promise<T, E>
+
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A _Promise for the completion of the callback.
+     */
+    catch<TResult, EResult = never>(
+        onrejected: (reason: E) => _Promise<TResult, EResult> | PromiseLike<TResult> | TResult
+    ): _Promise<T | TResult, EResult | unknownError>;
 
     /**
      * Attaches a callback for only the rejection of the Promise.
@@ -62,16 +72,6 @@ export interface _Promise<T, E> {
     catch(
         onrejected?: undefined | null
     ): _Promise<T, E>;
-
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A _Promise for the completion of the callback.
-     */
-
-    catch<TResult, EResult = never>(
-        onrejected: (reason: E) => _Promise<TResult, EResult> | PromiseLike<TResult> | TResult
-    ): _Promise<T | TResult, EResult | unknownError>;
 
     /**
      * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
