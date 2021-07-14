@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2021-07-14
+### Fixed
+
+- Fixed inference error related to `tap` and `tapCatch`.
+- Fixed `UnpackResolved` (necessary after the previous fix, as `_Promise` is no longer a subtype of `PromiseLike`).
+
+### Changed
+
+- Updated `dtslint` version.
+
+### Added
+
+- Exposed `UnpackResolved` and `UnpackRejected` as part of the library.
+
 ## [1.0.2] - 2021-07-02
 ### Fixed
 
