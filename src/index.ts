@@ -1,5 +1,6 @@
 import { unknownError } from './unknown-error';
 export * from './unknown-error';
+export * from './unpack';
 import { UnpackResolved, UnpackRejected } from './unpack';
 import { _AggregateError } from './aggregate-error';
 import { _PromiseSettledResult } from './promise-settled-result';

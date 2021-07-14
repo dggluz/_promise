@@ -1,5 +1,4 @@
-import { _Promise } from '_Promise';
-import { UnpackResolved } from '../src/unpack';
+import { _Promise, UnpackResolved } from '_Promise';
 
 // Getting from _Promise<number, never>
 const _pNumber = _Promise.resolve(4); // $ExpectType _Promise<number, never>
