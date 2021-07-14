@@ -127,17 +127,64 @@ Notice that the resolution type is preserved and the `unknownError` type is adde
 
 ### Converting to regular `Promise`s
 
+Automatic conversion to regular `Promise`s **is not supported right now**:
+
 ```typescript
-import { _Promise } from 'error-typed-promise';
-
-declare const errTypedPromise: _Promise<number, CustomError>;
-
-const regularPromise = Promise.resolve(errTypedPromise);
-
-// regularPromise has type: Promise<number>
+Promise.resolve(_Promise.resolve(3));
+// The above expression has type Promise<_Promise<number, never>>
+// instead of Promise<number>
 ```
 
-Notice that the resolution type is preserved, but the rejection type is lost.
+Perhaps, we will include a workaround for this in the future.
+
+In the meantime, you can explicitly set the `Promise` type:
+
+```typescript
+Promise.resolve<number>(_Promise.resolve(3));
+// The above expression has type Promise<number>
+```
+
+You can also use the `UnpackResolved` utility for inferring the type from the actual `_Promise`:
+
+```typescript
+// Assume you have a _Promise<number, string>:
+const _pNumberString: _Promise<number, string> = null as any;
+
+Promise.resolve<UnpackResolved<typeof _pNumberString>>(_pNumberString);
+// The above expression has type Promise<number>
+```
+
+### Using UnpackResolved and UnpackRejected
+
+There are a couple of type functions available for getting the _resolved_/_rejection_ types from a `_Promise`:
+
+```typescript
+// ## UnpackResolved
+// Unpacking the resolved value from a regular Promise
+const pNumber = Promise.resolve(3);
+type Number1 = UnpackResolved<typeof pNumber>; // number
+
+// Unpacking the resolved value from a _Promise
+const _pNumber = _Promise.resolve(3);
+type Number2 = UnpackResolved<typeof _pNumber>; // number
+
+// Unpacking the resolved value from a escalar
+const numb = parseInt('4', 10);
+type Number3 = UnpackResolved<typeof num>; // number
+
+// ## UnpackRejected
+// Unpacking the rejected value from a regular Promise
+const pRejected = Promise.reject('Boo!');
+type NotKwnownError = UnpackRejected<typeof pRejected>; // unknownError
+
+// Unpacking the rejected value from a _Promise
+const _pRejectedString = _Promise.reject('Boo!');
+type String1 = UnpackRejected<typeof _pRejectedString>; // string
+
+// Unpacking the rejected value from a escalar
+const numb = parseInt('4', 10);
+type Impossible = UnpackRejected<typeof num>; // never
+```
 
 ### Drawbacks
 
