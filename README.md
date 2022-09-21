@@ -197,4 +197,4 @@ Issues reporting, and pull requests are welcomed. To develop, just clone the rep
 
 ## License
 
-Licensed under MIT license. See more on [LICESE](./LICENSE).
+Licensed under MIT license. See more on [LICENSE](./LICENSE).
