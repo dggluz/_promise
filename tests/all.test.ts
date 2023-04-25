@@ -126,11 +126,11 @@ expectType<_Promise<[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "A" | "B" | "C" | "D" | "E"
 );
 
 // Combining values, _Promises and Promises
-expectType<_Promise<[number, boolean, string], unknownError>>(
+expectType<_Promise<[number, true, string], unknownError>>(
   _Promise.all([_pNumber, true, Promise.resolve('Boo!')])
 );
 // If a Promise is NOT included, unknownError is NOT added
-expectType<_Promise<[number, boolean, string], never>>(
+expectType<_Promise<[number, true, string], never>>(
   _Promise.all([_pNumber, true, 'Boo!'])
 );
 
