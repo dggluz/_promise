@@ -1,30 +1,53 @@
-import { _Promise } from '_Promise';
+import { expectType } from 'tsd';
+import { unknownError, _Promise } from '../src/index';
 
 
 const _pNumber: _Promise<number, never> = null as any;
-_pNumber; // $ExpectType _Promise<number, never>
+expectType<_Promise<number, never>>(
+  _pNumber
+);
+
 const _pRejectedString: _Promise<never, string> = null as any;
-_pRejectedString; // $ExpectType _Promise<never, string>
+expectType<_Promise<never, string>>(
+  _pRejectedString
+);
+
 const _pNumberString: _Promise<number, string> = null as any;
-_pNumberString; // $ExpectType _Promise<number, string>
+expectType<_Promise<number, string>>(
+  _pNumberString
+);
 
 // Resolving with a plain value
-_Promise.resolve(4); // $ExpectType _Promise<number, never>
+expectType<_Promise<number, never>>(
+  _Promise.resolve(4)
+);
 
 // Resolving with a resolved Promise
-_Promise.resolve(Promise.resolve(4)); // $ExpectType _Promise<number, unknownError>
+expectType<_Promise<number, unknownError>>(
+  _Promise.resolve(Promise.resolve(4))
+);
 
 // Resolving with a rejected Promise
-_Promise.resolve(Promise.reject(4)); // $ExpectType _Promise<never, unknownError>
+expectType<_Promise<never, unknownError>>(
+  _Promise.resolve(Promise.reject(4))
+);
 
 // Resolving with a resolved _Promise
-_Promise.resolve(_pNumber); // $ExpectType _Promise<number, never>
+expectType<_Promise<number, never>>(
+  _Promise.resolve(_pNumber)
+);
 
 // Resolving with a rejected _Promise
-_Promise.resolve(_pRejectedString); // $ExpectType _Promise<never, string>
+expectType<_Promise<never, string>>(
+  _Promise.resolve(_pRejectedString)
+); 
 
 // Resolving with a resolved/rejected promise
-_Promise.resolve(_pNumberString); // $ExpectType _Promise<number, string>
+expectType<_Promise<number, string>>(
+  _Promise.resolve(_pNumberString)
+); 
 
 // Resolving without a parameter
-_Promise.resolve(); // $ExpectType _Promise<void, never>
+expectType<_Promise<void, never>>(
+  _Promise.resolve()
+); 

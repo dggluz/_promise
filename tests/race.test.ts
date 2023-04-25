@@ -1,30 +1,54 @@
-import { _Promise } from '_Promise';
+import { expectType } from 'tsd';
+import { unknownError, _Promise } from '../src/index';
 
 const _pNumber: _Promise<number, never> = null as any;
-_pNumber; // $ExpectType _Promise<number, never>
+expectType<_Promise<number, never>>(
+  _pNumber
+);
+
 const _pRejectedNumber: _Promise<never, number> = null as any;
-_pRejectedNumber; // $ExpectType _Promise<never, number>
+expectType<_Promise<never, number>>(
+  _pRejectedNumber
+);
+
 const _pStringBoolean: _Promise<string, boolean> = null as any;
-_pStringBoolean; // $ExpectType _Promise<string, boolean>
+expectType<_Promise<string, boolean>>(
+  _pStringBoolean
+);
 
 // Without values
-_Promise.race([]); // $ExpectType _Promise<never, never>
+expectType<_Promise<never, never>>(
+  _Promise.race([])
+);
 
 // With plain values
-_Promise.race([1, 2, 3]); // $ExpectType _Promise<number, never>
+expectType<_Promise<number, never>>(
+  _Promise.race([1, 2, 3])
+);
 
 // With Promises
-_Promise.race([Promise.resolve(1), Promise.resolve(2)]); // $ExpectType _Promise<number, unknownError>
+expectType<_Promise<number, unknownError>>(
+  _Promise.race([Promise.resolve(1), Promise.resolve(2)])
+);
 
 // With _Promises
-_Promise.race([_pNumber, _pRejectedNumber, _pStringBoolean]); // $ExpectType _Promise<string | number, number | boolean>
+expectType<_Promise<string | number, number | boolean>>(
+  _Promise.race([_pNumber, _pRejectedNumber, _pStringBoolean])
+);
 
 // Mixed
-_Promise.race([1, Promise.resolve(2), _pNumber, _pRejectedNumber]); // $ExpectType _Promise<number, number | unknownError>
+expectType<_Promise<number, number | unknownError>>(
+  _Promise.race([1, Promise.resolve(2), _pNumber, _pRejectedNumber])
+);
 
 // With iterable
 const iterable: Iterable<number> = null as any;
-_Promise.race(iterable); // $ExpectType _Promise<number, never>
+expectType<_Promise<number, never>>(
+  _Promise.race(iterable)
+);
+
 // Complex case:
 const iterator2: Iterable<number | _Promise<boolean, string> | Promise<string>> = null as any;
-_Promise.race(iterator2); // $ExpectType _Promise<string | number | boolean, string | unknownError>
+expectType<_Promise<string | number | boolean, string | unknownError>>(
+  _Promise.race(iterator2)
+);

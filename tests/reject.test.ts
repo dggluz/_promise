@@ -1,29 +1,52 @@
-import { _Promise } from '_Promise';
+import { expectType } from 'tsd';
+import { _Promise } from '../src/index';
 
 const _pNumber: _Promise<number, never> = null as any;
-_pNumber; // $ExpectType _Promise<number, never>
+expectType<_Promise<number, never>>(
+  _pNumber
+);
+
 const _pRejectedString: _Promise<never, string> = null as any;
-_pRejectedString; // $ExpectType _Promise<never, string>
+expectType<_Promise<never, string>>(
+  _pRejectedString
+);
+
 const _pNumberString: _Promise<number, string> = null as any;
-_pNumberString; // $ExpectType _Promise<number, string>
+expectType<_Promise<number, string>>(
+  _pNumberString
+);
 
 // Resolving with a plain value
-_Promise.reject(4); // $ExpectType _Promise<never, number>
+expectType<_Promise<never, number>>(
+  _Promise.reject(4)
+);
 
 // Resolving with a resolved Promise
-_Promise.reject(Promise.resolve(4)); // $ExpectType _Promise<never, Promise<number>>
+expectType<_Promise<never, Promise<number>>>(
+  _Promise.reject(Promise.resolve(4))
+);
 
-// // Resolving with a rejected Promise
-_Promise.reject(Promise.reject(4)); // $ExpectType _Promise<never, Promise<never>>
+// Resolving with a rejected Promise
+expectType<_Promise<never, Promise<never>>>(
+  _Promise.reject(Promise.reject(4))
+);
 
-// // Resolving with a resolved _Promise
-_Promise.reject(_pNumber); // $ExpectType _Promise<never, _Promise<number, never>>
+// Resolving with a resolved _Promise
+expectType<_Promise<never, _Promise<number, never>>>(
+  _Promise.reject(_pNumber)
+);
 
-// // Resolving with a rejected _Promise
-_Promise.reject(_pRejectedString); // $ExpectType _Promise<never, _Promise<never, string>>
+// Resolving with a rejected _Promise
+expectType<_Promise<never, _Promise<never, string>>>(
+  _Promise.reject(_pRejectedString)
+);
 
-// // Resolving with a resolved/rejected promise
-_Promise.reject(_pNumberString); // $ExpectType _Promise<never, _Promise<number, string>>
+// Resolving with a resolved/rejected promise
+expectType<_Promise<never, _Promise<number, string>>>(
+  _Promise.reject(_pNumberString)
+);
 
-// // Resolving without a parameter
-_Promise.reject(); // $ExpectType _Promise<never, undefined>
+// Resolving without a parameter
+expectType<_Promise<never, undefined>>(
+  _Promise.reject()
+);
