@@ -1,58 +1,106 @@
-import { _Promise } from '_Promise';
+import { expectType } from 'tsd';
+import { unknownError, _Promise } from '../src/index';
 
 const _pStringBoolean: _Promise<string, boolean> = null as any;
-_pStringBoolean; // $ExpectType _Promise<string, boolean>
+expectType<_Promise<string, boolean>>(
+  _pStringBoolean
+);
+
 const _pNumber: _Promise<number, never> = null as any;
-_pNumber; // $ExpectType _Promise<number, never>
+expectType<_Promise<number, never>>(
+  _pNumber
+);
+
 const _pNumberString: _Promise<number, string> = null as any;
-_pNumberString; // $ExpectType _Promise<number, string>
+expectType<_Promise<number, string>>(
+  _pNumberString
+);
+
 const _pRejectedNumber: _Promise<never, number> = null as any;
-_pRejectedNumber; // $ExpectType _Promise<never, number>
+expectType<_Promise<never, number>>(
+  _pRejectedNumber
+);
 
 // Without parameter
-_pStringBoolean.catch(); // $ExpectType _Promise<string, boolean>
+expectType<_Promise<string, boolean>>(
+  _pStringBoolean.catch()
+);
 
 // With undefined
-_pStringBoolean.catch(undefined); // $ExpectType _Promise<string, boolean>
+expectType<_Promise<string, boolean>>(
+  _pStringBoolean.catch(undefined)
+);
 
 // With null
-_pStringBoolean.catch(null); // $ExpectType _Promise<string, boolean>
+expectType<_Promise<string, boolean>>(
+  _pStringBoolean.catch(null)
+);
 
 // with a callback returning a plain value
-_pStringBoolean.catch(e => { // $ExpectType _Promise<string | number, unknownError>
-    e; // $ExpectType boolean
+expectType<_Promise<string | number, unknownError>>(
+  _pStringBoolean.catch(e => {
+    expectType<boolean>(
+      e
+    );
+
     return 3;
-});
+  })
+);
 
 // with a callback returning a resolved PromiseLike
-_pStringBoolean.catch(e => { // $ExpectType _Promise<string | number, unknownError>
-    e; // $ExpectType boolean
+expectType<_Promise<string | number, unknownError>>(
+  _pStringBoolean.catch(e => {
+    expectType<boolean>(
+      e
+    );
+
     return Promise.resolve(3);
-});
+  })
+);
 
 // with a callback returning a rejected PromiseLike
-_pStringBoolean.catch(e => { // $ExpectType _Promise<string, unknownError>
-    e; // $ExpectType boolean
+expectType<_Promise<string, unknownError>>(
+  _pStringBoolean.catch(e => {
+    expectType<boolean>(
+      e
+    );
+
     return Promise.reject(3);
-});
+  })
+);
 
 // with a callback returning an only resolved _Promise
-_pStringBoolean.catch(e => { // $ExpectType _Promise<string | number, unknownError>
-    e; // $ExpectType boolean
+expectType<_Promise<string | number, unknownError>>(
+  _pStringBoolean.catch(e => {
+    expectType<boolean>(
+      e
+    );
+    
     return _pNumber;
-});
+  })
+);
 
 // with a callback returning a resolved/rejected _Promise
-_pStringBoolean.catch(e => { // $ExpectType _Promise<string | number, string | unknownError>
-    e; // $ExpectType boolean
+expectType<_Promise<string | number, string | unknownError>>(
+  _pStringBoolean.catch(e => {
+    expectType<boolean>(
+      e
+    );
+    
     return _pNumberString;
-});
+  })
+);
 
 // with a callback returning an only rejected PromiseLike
-_pStringBoolean.catch(e => { // $ExpectType _Promise<string, number | unknownError>
-    e; // $ExpectType boolean
+expectType<_Promise<string, number | unknownError>>(
+  _pStringBoolean.catch(e => {
+    expectType<boolean>(
+      e
+    );
+
     return _pRejectedNumber;
-});
+  })
+);
 
 /**
  * Tap
@@ -60,20 +108,19 @@ _pStringBoolean.catch(e => { // $ExpectType _Promise<string, number | unknownErr
 
 const tap: <T> (fn: (x: T) => any) => (value: T) => T = null as any;
 
-// $ExpectType _Promise<string | number, unknownError>
-const tap1 = _pNumberString
+expectType<_Promise<string | number, unknownError>>(
+  _pNumberString
     .catch(tap(parseInt))
-;
+);
 
-// $ExpectType _Promise<string | number, unknownError>
-const tap2 = _pNumberString
+expectType<_Promise<string | number, unknownError>>(
+  _pNumberString
     .catch(
-        // $ExpectType (value: string) => string
-        tap(
-            x => x.length // $ExpectType (x: string) => number
-        )
+      tap(
+        x => x.length
+      )
     )
-;
+);
 
 /**
  * TapCatch
@@ -81,17 +128,16 @@ const tap2 = _pNumberString
 
 const tapCatch: <E> (fn: (err: E) => any) => (err: E) => _Promise<never, E> = null as any;
 
-// $ExpectType _Promise<number, string | unknownError>
-const tapCatch1 = _pNumberString
+expectType<_Promise<number, string | unknownError>>(
+  _pNumberString
     .catch(tapCatch(parseInt))
-;
+);
 
-// $ExpectType _Promise<number, string | unknownError>
-const tapCatch2 = _pNumberString
+expectType<_Promise<number, string | unknownError>>(
+  _pNumberString
     .catch(
-        // $ExpectType (err: string) => _Promise<never, string>
-        tapCatch(
-            x => x.length // $ExpectType (x: string) => number
-        )
+      tapCatch(
+        x => x.length
+      )
     )
-;
+);

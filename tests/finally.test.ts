@@ -1,49 +1,79 @@
-import { _Promise } from '_Promise';
+import { expectType } from 'tsd';
+import { unknownError, _Promise } from '../src/index';
 
 const _pStringBoolean: _Promise<string, boolean> = null as any;
-_pStringBoolean; // $ExpectType _Promise<string, boolean>
+expectType<_Promise<string, boolean>>(
+  _pStringBoolean
+);
+
 const _pNumber: _Promise<number, never> = null as any;
-_pNumber; // $ExpectType _Promise<number, never>
+expectType<_Promise<number, never>>(
+  _pNumber
+);
+
 const _pNumberString: _Promise<number, string> = null as any;
-_pNumberString; // $ExpectType _Promise<number, string>
+expectType<_Promise<number, string>>(
+  _pNumberString
+);
+
 const _pRejectedNumber: _Promise<never, number> = null as any;
-_pRejectedNumber; // $ExpectType _Promise<never, number>
+expectType<_Promise<never, number>>(
+  _pRejectedNumber
+);
 
 // Without parameter
-_pStringBoolean.finally(); // $ExpectType _Promise<string, boolean>
+expectType<_Promise<string, boolean>>(
+  _pStringBoolean.finally()
+);
 
 // With undefined
-_pStringBoolean.finally(undefined); // $ExpectType _Promise<string, boolean>
+expectType<_Promise<string, boolean>>(
+  _pStringBoolean.finally(undefined)
+);
 
 // With null
-_pStringBoolean.finally(null); // $ExpectType _Promise<string, boolean>
+expectType<_Promise<string, boolean>>(
+  _pStringBoolean.finally(null)
+);
 
 // with a callback returning a plain value
-_pStringBoolean.finally(() => { // $ExpectType _Promise<string, boolean | unknownError>
+expectType<_Promise<string, boolean | unknownError>>(
+  _pStringBoolean.finally(() => {
     return 3;
-});
+  })
+);
 
 // with a callback returning a resolved PromiseLike
-_pStringBoolean.finally(() => { // $ExpectType _Promise<string, boolean | unknownError>
+expectType<_Promise<string, boolean | unknownError>>(
+  _pStringBoolean.finally(() => {
     return Promise.resolve(3);
-});
+  })
+);
 
 // with a callback returning a rejected PromiseLike
-_pStringBoolean.finally(() => { // $ExpectType _Promise<string, boolean | unknownError>
+expectType<_Promise<string, boolean | unknownError>>(
+  _pStringBoolean.finally(() => {
     return Promise.reject(3);
-});
+  })
+);
 
 // with a callback returning a resolved _Promise
-_pStringBoolean.finally(() => { // $ExpectType _Promise<string, boolean | unknownError>
+expectType<_Promise<string, boolean | unknownError>>(
+  _pStringBoolean.finally(() => {
     return _pNumber;
-});
+  })
+);
 
 // with a callback returning a resolved/rejected _Promise
-_pStringBoolean.finally(() => { // $ExpectType _Promise<string, string | boolean | unknownError>
+expectType<_Promise<string, string | boolean | unknownError>>(
+  _pStringBoolean.finally(() => {
     return _pNumberString;
-});
+  })
+);
 
 // with a callback returning a rejected _Promise
-_pStringBoolean.finally(() => { // $ExpectType _Promise<string, number | boolean | unknownError>
+expectType<_Promise<string, number | boolean | unknownError>>(
+  _pStringBoolean.finally(() => {
     return _pRejectedNumber;
-});
+  })
+);

@@ -1,19 +1,42 @@
-import { _Promise, UnpackRejected } from '_Promise';
+import { expectType } from 'tsd';
+import { _Promise, UnpackRejected, unknownError } from '../src/index';
 
 // Getting from _Promise<number, never>
-const _pNumber = _Promise.resolve(4); // $ExpectType _Promise<number, never>
-type From_Promise = UnpackRejected<typeof _pNumber>; // $ExpectType never
+const _pNumber = _Promise.resolve(4);
+expectType<_Promise<number, never>>(
+  _pNumber
+);
+
+expectType<never>(
+  null as UnpackRejected<typeof _pNumber>
+);
 
 // Getting from _Promise<number, string>
 const _pNumberString: _Promise<number, string> = null as any;
-_pNumberString; // $ExpectType _Promise<number, string>
-type From_PromiseWithRejected = UnpackRejected<typeof _pNumberString>; // $ExpectType string
+expectType<_Promise<number, string>>(
+  _pNumberString
+);
+
+expectType<string>(
+  null as any as UnpackRejected<typeof _pNumberString>
+);
 
 // Getting from normal Promise<number>
 const pNumber = Promise.resolve(3);
-pNumber; // $ExpectType Promise<number>
-type FromPromise = UnpackRejected<typeof pNumber>; // $ExpectType unknownError
+expectType<Promise<number>>(
+  pNumber
+);
+
+expectType<unknownError>(
+  null as any as UnpackRejected<typeof pNumber>
+);
 
 // Getting from escalar
-const number = parseInt('5', 10); // $ExpectType number
-type FromEscalar = UnpackRejected<typeof number>; // $ExpectType never
+const number = parseInt('5', 10);
+expectType<number>(
+  number
+);
+
+expectType<never>(
+  null as UnpackRejected<typeof number>
+);

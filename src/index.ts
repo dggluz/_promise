@@ -7,6 +7,8 @@ import { _PromiseSettledResult } from './promise-settled-result';
 
 declare const __brand: unique symbol;
 
+Promise.all;
+
 /**
  * Represents the completion of an asynchronous operation
  */
@@ -113,232 +115,17 @@ export interface _PromiseConstructor {
      */
     new (executor: () => void): _Promise<unknown, never>;
     new <T, E = never>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: E) => void) => void): _Promise<T, E | unknownError>;
-    
+
     /**
      * Creates a _Promise that is resolved with an array of results when all of the provided Promises
      * resolve, or rejected when any Promise is rejected.
      * @param values An array of Promises.
      * @returns A new _Promise.
      */
-    all<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(values: readonly [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10]): _Promise<[
-            UnpackResolved<T1>,
-            UnpackResolved<T2>,
-            UnpackResolved<T3>,
-            UnpackResolved<T4>,
-            UnpackResolved<T5>,
-            UnpackResolved<T6>,
-            UnpackResolved<T7>,
-            UnpackResolved<T8>,
-            UnpackResolved<T9>,
-            UnpackResolved<T10>
-        ],
-        UnpackRejected<T1> |
-        UnpackRejected<T2> |
-        UnpackRejected<T3> |
-        UnpackRejected<T4> |
-        UnpackRejected<T5> |
-        UnpackRejected<T6> |
-        UnpackRejected<T7> |
-        UnpackRejected<T8> |
-        UnpackRejected<T9> |
-        UnpackRejected<T10>
+    all<T extends readonly unknown[] | []>(values: T): _Promise<
+        { -readonly [P in keyof T]: UnpackResolved<T[P]> },
+        UnpackRejected<T[keyof T]>
     >;
-
-    /**
-     * Creates a _Promise that is resolved with an array of results when all of the provided Promises
-     * resolve, or rejected when any Promise is rejected.
-     * @param values An array of Promises.
-     * @returns A new _Promise.
-     */
-    all<T1, T2, T3, T4, T5, T6, T7, T8, T9>(values: readonly [T1, T2, T3, T4, T5, T6, T7, T8, T9]): _Promise<[
-            UnpackResolved<T1>,
-            UnpackResolved<T2>,
-            UnpackResolved<T3>,
-            UnpackResolved<T4>,
-            UnpackResolved<T5>,
-            UnpackResolved<T6>,
-            UnpackResolved<T7>,
-            UnpackResolved<T8>,
-            UnpackResolved<T9>
-        ],
-        UnpackRejected<T1> |
-        UnpackRejected<T2> |
-        UnpackRejected<T3> |
-        UnpackRejected<T4> |
-        UnpackRejected<T5> |
-        UnpackRejected<T6> |
-        UnpackRejected<T7> |
-        UnpackRejected<T8> |
-        UnpackRejected<T9>
-    >;
-
-    /**
-     * Creates a _Promise that is resolved with an array of results when all of the provided Promises
-     * resolve, or rejected when any Promise is rejected.
-     * @param values An array of Promises.
-     * @returns A new _Promise.
-     */
-    all<T1, T2, T3, T4, T5, T6, T7, T8>(values: readonly [T1, T2, T3, T4, T5, T6, T7, T8]): _Promise<[
-            UnpackResolved<T1>,
-            UnpackResolved<T2>,
-            UnpackResolved<T3>,
-            UnpackResolved<T4>,
-            UnpackResolved<T5>,
-            UnpackResolved<T6>,
-            UnpackResolved<T7>,
-            UnpackResolved<T8>
-        ],
-        UnpackRejected<T1> |
-        UnpackRejected<T2> |
-        UnpackRejected<T3> |
-        UnpackRejected<T4> |
-        UnpackRejected<T5> |
-        UnpackRejected<T6> |
-        UnpackRejected<T7> |
-        UnpackRejected<T8>
-    >;
-
-    /**
-     * Creates a _Promise that is resolved with an array of results when all of the provided Promises
-     * resolve, or rejected when any Promise is rejected.
-     * @param values An array of Promises.
-     * @returns A new _Promise.
-     */
-    all<T1, T2, T3, T4, T5, T6, T7>(values: readonly [T1, T2, T3, T4, T5, T6, T7]): _Promise<[
-            UnpackResolved<T1>,
-            UnpackResolved<T2>,
-            UnpackResolved<T3>,
-            UnpackResolved<T4>,
-            UnpackResolved<T5>,
-            UnpackResolved<T6>,
-            UnpackResolved<T7>
-        ],
-        UnpackRejected<T1> |
-        UnpackRejected<T2> |
-        UnpackRejected<T3> |
-        UnpackRejected<T4> |
-        UnpackRejected<T5> |
-        UnpackRejected<T6> |
-        UnpackRejected<T7>
-    >;
-
-    /**
-     * Creates a _Promise that is resolved with an array of results when all of the provided Promises
-     * resolve, or rejected when any Promise is rejected.
-     * @param values An array of Promises.
-     * @returns A new _Promise.
-     */
-    all<T1, T2, T3, T4, T5, T6>(values: readonly [T1, T2, T3, T4, T5, T6]): _Promise<[
-            UnpackResolved<T1>,
-            UnpackResolved<T2>,
-            UnpackResolved<T3>,
-            UnpackResolved<T4>,
-            UnpackResolved<T5>,
-            UnpackResolved<T6>
-        ],
-        UnpackRejected<T1> |
-        UnpackRejected<T2> |
-        UnpackRejected<T3> |
-        UnpackRejected<T4> |
-        UnpackRejected<T5> |
-        UnpackRejected<T6>
-    >;
-
-    /**
-     * Creates a _Promise that is resolved with an array of results when all of the provided Promises
-     * resolve, or rejected when any Promise is rejected.
-     * @param values An array of Promises.
-     * @returns A new _Promise.
-     */
-    all<T1, T2, T3, T4, T5>(values: readonly [T1, T2, T3, T4, T5]): _Promise<[
-            UnpackResolved<T1>,
-            UnpackResolved<T2>,
-            UnpackResolved<T3>,
-            UnpackResolved<T4>,
-            UnpackResolved<T5>
-        ],
-        UnpackRejected<T1> |
-        UnpackRejected<T2> |
-        UnpackRejected<T3> |
-        UnpackRejected<T4> |
-        UnpackRejected<T5>
-    >;
-
-    /**
-     * Creates a _Promise that is resolved with an array of results when all of the provided Promises
-     * resolve, or rejected when any Promise is rejected.
-     * @param values An array of Promises.
-     * @returns A new _Promise.
-     */
-    all<T1, T2, T3, T4>(values: readonly [T1, T2, T3, T4]): _Promise<[
-            UnpackResolved<T1>,
-            UnpackResolved<T2>,
-            UnpackResolved<T3>,
-            UnpackResolved<T4>
-        ],
-        UnpackRejected<T1> |
-        UnpackRejected<T2> |
-        UnpackRejected<T3> |
-        UnpackRejected<T4>
-    >;
-
-    /**
-     * Creates a _Promise that is resolved with an array of results when all of the provided Promises
-     * resolve, or rejected when any Promise is rejected.
-     * @param values An array of Promises.
-     * @returns A new _Promise.
-     */
-    all<T1, T2, T3>(values: readonly [T1, T2, T3]): _Promise<[
-            UnpackResolved<T1>,
-            UnpackResolved<T2>,
-            UnpackResolved<T3>
-        ],
-        UnpackRejected<T1> |
-        UnpackRejected<T2> |
-        UnpackRejected<T3>
-    >;
-
-    /**
-     * Creates a _Promise that is resolved with an array of results when all of the provided Promises
-     * resolve, or rejected when any Promise is rejected.
-     * @param values An array of Promises.
-     * @returns A new _Promise.
-     */
-    all<T1, T2>(values: readonly [T1, T2]): _Promise<[
-            UnpackResolved<T1>,
-            UnpackResolved<T2>
-        ],
-        UnpackRejected<T1> |
-        UnpackRejected<T2>
-    >;
-
-    /**
-     * Creates a _Promise that is resolved with an array of results when all of the provided Promises
-     * resolve, or rejected when any Promise is rejected.
-     * @param values An array of Promises.
-     * @returns A new _Promise.
-     */
-    all<T>(values: [T]): _Promise<[
-            UnpackResolved<T>
-        ],
-        UnpackRejected<T>
-    >;
-
-    /**
-     * Creates a _Promise that is resolved with an array of results when all of the provided Promises
-     * resolve, or rejected when any Promise is rejected.
-     * @param values An array of Promises.
-     * @returns A new _Promise.
-     */
-    all(values: []): _Promise<[], never>;
-
-    /**
-     * Creates a _Promise that is resolved with an array of results when all of the provided Promises
-     * resolve, or rejected when any Promise is rejected.
-     * @param values An array of Promises.
-     * @returns A new _Promise.
-     */
-    all<T>(values: readonly T[]): _Promise<UnpackResolved<T>[], UnpackRejected<T>>;
 
     /**
      * Creates a _Promise that is resolved with an array of results when all of the provided Promises

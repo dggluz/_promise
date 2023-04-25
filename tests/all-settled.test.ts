@@ -1,30 +1,54 @@
-import { _Promise } from '_Promise';
+import { expectType } from 'tsd';
+import { unknownError, _Promise } from '../src/index';
+import { _PromiseSettledResult } from '../src/promise-settled-result';
 
 const _pNumber: _Promise<number, never> = null as any;
-_pNumber; // $ExpectType _Promise<number, never>
+expectType<_Promise<number, never>>(
+  _pNumber
+);
+
 const _pRejectedNumber: _Promise<never, number> = null as any;
-_pRejectedNumber; // $ExpectType _Promise<never, number>
+expectType<_Promise<never, number>>(
+  _pRejectedNumber
+);
+
 const _pStringBoolean: _Promise<string, boolean> = null as any;
-_pStringBoolean; // $ExpectType _Promise<string, boolean>
+expectType<_Promise<string, boolean>>(
+  _pStringBoolean
+);
 
 // Without values
-_Promise.allSettled([]); // $ExpectType _Promise<[], never>
+expectType<_Promise<[], never>>(
+  _Promise.allSettled([])
+);
 
 // With plain values
-_Promise.allSettled([1, 2, 3]); // $ExpectType _Promise<[_PromiseSettledResult<number, never>, _PromiseSettledResult<number, never>, _PromiseSettledResult<number, never>], never>
+expectType<_Promise<[_PromiseSettledResult<number, never>, _PromiseSettledResult<number, never>, _PromiseSettledResult<number, never>], never>>(
+  _Promise.allSettled([1, 2, 3])
+);
 
 // With Promises
-_Promise.allSettled([Promise.resolve(1), Promise.resolve(2)]); // $ExpectType _Promise<[_PromiseSettledResult<number, unknownError>, _PromiseSettledResult<number, unknownError>], never>
+expectType<_Promise<[_PromiseSettledResult<number, unknownError>, _PromiseSettledResult<number, unknownError>], never>>(
+  _Promise.allSettled([Promise.resolve(1), Promise.resolve(2)])
+);
 
 // With _Promises
-_Promise.allSettled([_pNumber, _pRejectedNumber, _pStringBoolean]); // $ExpectType _Promise<[_PromiseSettledResult<number, never>, _PromiseSettledResult<never, number>, _PromiseSettledResult<string, boolean>], never>
+expectType<_Promise<[_PromiseSettledResult<number, never>, _PromiseSettledResult<never, number>, _PromiseSettledResult<string, boolean>], never>>(
+  _Promise.allSettled([_pNumber, _pRejectedNumber, _pStringBoolean])
+);
 
 // Mixed
-_Promise.allSettled([1, Promise.resolve(2), _pNumber, _pRejectedNumber]); // $ExpectType _Promise<[_PromiseSettledResult<number, never>, _PromiseSettledResult<number, unknownError>, _PromiseSettledResult<number, never>, _PromiseSettledResult<never, number>], never>
+expectType<_Promise<[_PromiseSettledResult<number, never>, _PromiseSettledResult<number, unknownError>, _PromiseSettledResult<number, never>, _PromiseSettledResult<never, number>], never>>(
+  _Promise.allSettled([1, Promise.resolve(2), _pNumber, _pRejectedNumber])
+);
 
 // With iterable
 const iterable: Iterable<number> = null as any;
-_Promise.allSettled(iterable); // $ExpectType _Promise<_PromiseSettledResult<number, never>[], never>
+expectType<_Promise<_PromiseSettledResult<number, never>[], never>>(
+  _Promise.allSettled(iterable)
+);
 // Complex case:
 const iterator2: Iterable<number | _Promise<boolean, string> | Promise<string>> = null as any;
-_Promise.allSettled(iterator2); // $ExpectType _Promise<_PromiseSettledResult<string | number | boolean, string | unknownError>[], never>
+expectType<_Promise<_PromiseSettledResult<string | number | boolean, string | unknownError>[], never>>(
+  _Promise.allSettled(iterator2)
+);

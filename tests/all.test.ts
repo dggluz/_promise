@@ -1,76 +1,157 @@
-import { _Promise } from '_Promise';
+import { expectType } from 'tsd';
+import { unknownError, _Promise } from '../src/index';
 
 const _pNumber: _Promise<number, never> = null as any;
-_pNumber; // $ExpectType _Promise<number, never>
+expectType<_Promise<number, never>>(
+  _pNumber
+);
+
 const _pRejectedNumber: _Promise<never, number> = null as any;
-_pRejectedNumber; // $ExpectType _Promise<never, number>
+expectType<_Promise<never, number>>(
+  _pRejectedNumber
+);
 
 const _p1: _Promise<1, 'A'> = null as any;
-_p1; // $ExpectType _Promise<1, "A">
+expectType<_Promise<1, "A">>(
+  _p1
+);
+
 const _p2: _Promise<2, 'B'> = null as any;
-_p2; // $ExpectType _Promise<2, "B">
+expectType<_Promise<2, "B">>(
+  _p2
+);
+
 const _p3: _Promise<3, 'C'> = null as any;
-_p3; // $ExpectType _Promise<3, "C">
+expectType<_Promise<3, "C">>(
+  _p3
+);
+
 const _p4: _Promise<4, 'D'> = null as any;
-_p4; // $ExpectType _Promise<4, "D">
+expectType<_Promise<4, "D">>(
+  _p4
+);
+
 const _p5: _Promise<5, 'E'> = null as any;
-_p5; // $ExpectType _Promise<5, "E">
+expectType<_Promise<5, "E">>(
+  _p5
+);
+
 const _p6: _Promise<6, 'F'> = null as any;
-_p6; // $ExpectType _Promise<6, "F">
+expectType<_Promise<6, "F">>(
+  _p6
+);
+
 const _p7: _Promise<7, 'G'> = null as any;
-_p7; // $ExpectType _Promise<7, "G">
+expectType<_Promise<7, "G">>(
+  _p7
+);
+
 const _p8: _Promise<8, 'H'> = null as any;
-_p8; // $ExpectType _Promise<8, "H">
+expectType<_Promise<8, "H">>(
+  _p8
+);
+
 const _p9: _Promise<9, 'I'> = null as any;
-_p9; // $ExpectType _Promise<9, "I">
+expectType<_Promise<9, "I">>(
+  _p9
+);
+
 const _p10: _Promise<10, 'J'> = null as any;
-_p10; // $ExpectType _Promise<10, "J">
+expectType<_Promise<10, "J">>(
+  _p10
+);
 
 // Basic cases:
 
 // For 0 Promises
-_Promise.all([]); // $ExpectType _Promise<[], never>
+expectType<_Promise<[], never>>(
+  _Promise.all([])
+);
 
 // For 1 plain value
-_Promise.all([3]); // $ExpectType _Promise<[number], never>
+expectType<_Promise<[number], never>>(
+  _Promise.all([3])
+);
 
 // For 1 resolved Promise
-_Promise.all([Promise.resolve(3)]); // $ExpectType _Promise<[number], unknownError>
+expectType<_Promise<[number], unknownError>>(
+  _Promise.all([Promise.resolve(3)])
+);
 
 // For 1 rejected Promise
-_Promise.all([Promise.reject(3)]); // $ExpectType _Promise<[never], unknownError>
+expectType<_Promise<[never], unknownError>>(
+  _Promise.all([Promise.reject(3)])
+);
 
 // For 1 resolved _Promise
-_Promise.all([_pNumber]); // $ExpectType _Promise<[number], never>
+expectType<_Promise<[number], never>>(
+  _Promise.all([_pNumber])
+);
 
 // For 1 rejected _Promise
-_Promise.all([_pRejectedNumber]); // $ExpectType _Promise<[never], number>
+expectType<_Promise<[never], number>>(
+  _Promise.all([_pRejectedNumber])
+);
 
 // Augmenting array's size
-_Promise.all([_p1]); // $ExpectType _Promise<[1], "A">
-_Promise.all([_p1, _p2]); // $ExpectType _Promise<[1, 2], "A" | "B">
-_Promise.all([_p1, _p2, _p3]); // $ExpectType _Promise<[1, 2, 3], "A" | "B" | "C">
-_Promise.all([_p1, _p2, _p3, _p4]); // $ExpectType _Promise<[1, 2, 3, 4], "A" | "B" | "C" | "D">
-_Promise.all([_p1, _p2, _p3, _p4, _p5]); // $ExpectType _Promise<[1, 2, 3, 4, 5], "A" | "B" | "C" | "D" | "E">
-_Promise.all([_p1, _p2, _p3, _p4, _p5, _p6]); // $ExpectType _Promise<[1, 2, 3, 4, 5, 6], "A" | "B" | "C" | "D" | "E" | "F">
-_Promise.all([_p1, _p2, _p3, _p4, _p5, _p6, _p7]); // $ExpectType _Promise<[1, 2, 3, 4, 5, 6, 7], "A" | "B" | "C" | "D" | "E" | "F" | "G">
-_Promise.all([_p1, _p2, _p3, _p4, _p5, _p6, _p7, _p8]); // $ExpectType _Promise<[1, 2, 3, 4, 5, 6, 7, 8], "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H">
-_Promise.all([_p1, _p2, _p3, _p4, _p5, _p6, _p7, _p8, _p9]); // $ExpectType _Promise<[1, 2, 3, 4, 5, 6, 7, 8, 9], "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I">
-_Promise.all([_p1, _p2, _p3, _p4, _p5, _p6, _p7, _p8, _p9, _p10]); // $ExpectType _Promise<[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J">
+expectType<_Promise<[1], "A">>(
+  _Promise.all([_p1])
+);
+expectType<_Promise<[1, 2], "A" | "B">>(
+  _Promise.all([_p1, _p2])
+);
+expectType<_Promise<[1, 2, 3], "A" | "B" | "C">>(
+  _Promise.all([_p1, _p2, _p3])
+);
+expectType<_Promise<[1, 2, 3, 4], "A" | "B" | "C" | "D">>(
+  _Promise.all([_p1, _p2, _p3, _p4])
+);
+expectType<_Promise<[1, 2, 3, 4, 5], "A" | "B" | "C" | "D" | "E">>(
+  _Promise.all([_p1, _p2, _p3, _p4, _p5])
+);
+expectType<_Promise<[1, 2, 3, 4, 5, 6], "A" | "B" | "C" | "D" | "E" | "F">>(
+  _Promise.all([_p1, _p2, _p3, _p4, _p5, _p6])
+);
+expectType<_Promise<[1, 2, 3, 4, 5, 6, 7], "A" | "B" | "C" | "D" | "E" | "F" | "G">>(
+  _Promise.all([_p1, _p2, _p3, _p4, _p5, _p6, _p7])
+);
+expectType<_Promise<[1, 2, 3, 4, 5, 6, 7, 8], "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H">>(
+  _Promise.all([_p1, _p2, _p3, _p4, _p5, _p6, _p7, _p8])
+);
+expectType<_Promise<[1, 2, 3, 4, 5, 6, 7, 8, 9], "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I">>(
+  _Promise.all([_p1, _p2, _p3, _p4, _p5, _p6, _p7, _p8, _p9])
+);
+expectType<_Promise<[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J">>(
+  _Promise.all([_p1, _p2, _p3, _p4, _p5, _p6, _p7, _p8, _p9, _p10])
+);
 
 // Combining values, _Promises and Promises
-_Promise.all([_pNumber, true, Promise.resolve('Boo!')]); // $ExpectType _Promise<[number, boolean, string], unknownError>
+expectType<_Promise<[number, true, string], unknownError>>(
+  _Promise.all([_pNumber, true, Promise.resolve('Boo!')])
+);
 // If a Promise is NOT included, unknownError is NOT added
-_Promise.all([_pNumber, true, 'Boo!']); // $ExpectType _Promise<[number, boolean, string], never>
+expectType<_Promise<[number, true, string], never>>(
+  _Promise.all([_pNumber, true, 'Boo!'])
+);
 
 // Most generic case
-_Promise.all([_p1, _p2, _p3, _p4, _p5, _p6, _p7, _p8, _p9, _p10, _pNumber]); // $ExpectType _Promise<number[], "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J">
-_Promise.all([_p1, _p2, _p3, _p4, _p5, _p6, _p7, _p8, _p9, _p10, Promise.resolve(11)]); // $ExpectType _Promise<number[], unknownError | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J">
-_Promise.all([_p1, _p2, _p3, _p4, _p5, _p6, _p7, _p8, _p9, _p10, 11]); // $ExpectType _Promise<number[], "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J">
+expectType<_Promise<number[], "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J">>(
+  _Promise.all([_p1, _p2, _p3, _p4, _p5, _p6, _p7, _p8, _p9, _p10, _pNumber])
+);
+expectType<_Promise<number[], unknownError | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J">>(
+  _Promise.all([_p1, _p2, _p3, _p4, _p5, _p6, _p7, _p8, _p9, _p10, Promise.resolve(11)])
+);
+expectType<_Promise<number[], "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J">>(
+  _Promise.all([_p1, _p2, _p3, _p4, _p5, _p6, _p7, _p8, _p9, _p10, 11])
+);
 
 // Iterable:
 const iterable: Iterable<number> = null as any;
-_Promise.all(iterable); // $ExpectType _Promise<number[], never>
+expectType<_Promise<number[], never>>(
+  _Promise.all(iterable)
+);
 // Complex case:
 const iterator2: Iterable<number | _Promise<boolean, string> | Promise<string>> = null as any;
-_Promise.all(iterator2); // $ExpectType _Promise<(string | number | boolean)[], string | unknownError>
+expectType<_Promise<(string | number | boolean)[], string | unknownError>>(
+  _Promise.all(iterator2)
+);
