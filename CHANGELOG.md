@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.3] - 2021-04-25
+### Refactor
+
+- Replaced [dtslint](https://github.com/microsoft/dtslint) by [tsd](https://github.com/SamVerschueren/tsd).
+- Reimplemented `Promise.all` typings to support arrays of any length.
+
 ## [1.1.2] - 2021-07-14
 ### Fixed
 
